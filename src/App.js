@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AppRoutes from "./AppRoutes/AppRoutes";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import SplashLoadingPage from "./Pages/SplashLoadingPage/SplashLoadingPage";
+
+export default function App() {
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState();
+
+  useEffect(() => {
+    const userToken = localStorage.getItem("token");
+    setToken(userToken);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <SplashLoadingPage />;
+  }
+
+  return token ? <AppRoutes /> : <LoginPage />;
 }
-
-export default App;
